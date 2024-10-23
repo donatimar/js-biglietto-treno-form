@@ -52,7 +52,7 @@ button.addEventListener("click", function () {
 
   document.getElementById("carriage").innerHTML = `
     <h3 class="fw-bolder fs-5">Carrozza</h3>
-    <p>${Math.floor(Math.random() * 10) + 1}</p>
+    <p>${Math.floor(Math.random() * 20) + 1}</p>
   `;
 
   document.getElementById("code").innerHTML = `
