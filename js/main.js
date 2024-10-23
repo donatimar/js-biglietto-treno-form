@@ -3,53 +3,80 @@ console.log(button);
 const buttonCancel = document.querySelector(".btn-danger");
 console.log(buttonCancel);
 
+// funzione per svuotare i campi col pulsante Annulla
 buttonCancel.addEventListener("click", function () {
-  const name = (document.getElementById("name").value = "");
-  const km = (document.getElementById("km").value = "");
-  const age = (document.getElementById("age").value = "");
-  ticket.classList.add("d-none");
+  document.getElementById("name").value = "";
+  document.getElementById("km").value = "";
+  document.getElementById("age").value = "";
+  document.getElementById("nominative").innerHTML = `
+    <h3 class="fw-bolder fs-5">Nome passeggero</h3>
+  `;
+  document.getElementById("discount").innerHTML = `
+    <h3 class="fw-bolder fs-5">Offerta</h3>
+  `;
+  document.getElementById("carriage").innerHTML = `
+    <h3 class="fw-bolder fs-5">Carrozza</h3>
+  `;
+  document.getElementById("code").innerHTML = `
+    <h3 class="fw-bolder fs-5">Codice CP</h3>
+  `;
+  document.getElementById("price").innerHTML = `
+    <h3 class="fw-bolder fs-5">Costo Biglietto</h3>
+  `;
 });
 
+// funzione per generare il biglietto
 button.addEventListener("click", function () {
-  const name = document.getElementById("name").value;
-  const km = document.getElementById("km").value;
+  const name = document.getElementById("name").value.trim();
+  const km = parseFloat(document.getElementById("km").value);
   const age = document.getElementById("age").value;
-  const ticket = document.getElementById("ticket");
-  console.log(km);
-  console.log(age);
-  console.log(name);
-  if (name === "" || isNaN(km) || age === "") {
-    alert("inserisci i valori mancanti!");
-  } else {
-    const nominativo = (document.getElementById("nominative").innerHTML = `
-        <h6 class = "fw-bolder">Nome passeggero</h6>
-        <p class = "fw-bolder"> ${name} </p>
-    `);
-    const offerta = (document.getElementById("discount").innerHTML = `
-        <h6>Offerta</h6>
-        <p> ${age}</p>
-    `);
-    const carriage = document.getElementById("carriage");
-    const nCarriage = (carriage.querySelector("div").innerHTML = Math.floor(
-      Math.random() * 10
-    ));
-    const code = document.getElementById("code");
-    const cp = (code.querySelector("div").innerHTML =
-      Math.floor(Math.random() * 99999) + 10000);
+
+  console.log(km, age, name);
+
+  // verifico che i dati inseriti siano corretti
+  if (name === "" || isNaN(km) || km <= 0 || age === "") {
+    alert("Inserisci i valori in modo corretto");
+    return;
   }
+
+  // aggiungi i dati raccolti al biglietto generato
+  document.getElementById("nominative").innerHTML = `
+    <h3 class="fw-bolder fs-5">Nome passeggero</h3>
+    <p>${name}</p>
+  `;
+
+  document.getElementById("discount").innerHTML = `
+    <h3 class="fw-bolder fs-5">Offerta</h3>
+    <p>${age}</p>
+  `;
+
+  document.getElementById("carriage").innerHTML = `
+    <h3 class="fw-bolder fs-5">Carrozza</h3>
+    <p>${Math.floor(Math.random() * 10) + 1}</p>
+  `;
+
+  document.getElementById("code").innerHTML = `
+    <h3 class="fw-bolder fs-5">Codice CP</h3>
+    <p>${Math.floor(Math.random() * 90000) + 10000}</p>
+  `;
+
+  // calcolo il prezzo del biglietto
   const fixedPrice = 0.21;
-  let TravelPrice = fixedPrice * km;
+  let travelPrice = fixedPrice * km;
+
+  // Sconto del 20%
   if (age === "Biglietto Under 18") {
-    TravelPrice = TravelPrice - (TravelPrice * 20) / 100;
+    travelPrice *= 0.8;
+    // Sconto del 40%
   } else if (age === "Biglietto Over 65") {
-    TravelPrice = TravelPrice - (TravelPrice * 40) / 100;
-  } else {
-    TravelPrice;
+    travelPrice *= 0.6;
   }
-  console.log(TravelPrice);
-  let decimalCost = TravelPrice.toFixed(2);
-  const price = (document.getElementById("price").innerHTML = `
-        <h6 class = "fw-bolder">Costo Biglietto</h6>
-        <p class = "fw-bolder">${decimalCost} &euro;</p>
-        `);
+
+  const decimalCost = travelPrice.toFixed(2);
+
+  // output del prezzo del biglietto
+  document.getElementById("price").innerHTML = `
+    <h3 class="fw-bolder fs-5 ">Costo Biglietto</h3>
+    <p>${decimalCost} €</p>
+  `;
 });
